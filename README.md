@@ -10,9 +10,9 @@ course registration and assignment submission process. Main objective was gettin
 
 of development in J2EE, particularly JSP/Servlet technology which had become enormously popular and is deployed
 
-widely in industry. Meanwhile I have explored infrastructure tools and approaches for system scaling (Cassandra, 
+widely in industry. Meanwhile I have explored infrastructure tools and approaches for system scaling
 
-MapReduce/Hadoop, Scribe, Memcached, ZooKeeper) and ways of their application upon the course management system, 
+(MapReduce/Hadoop, ZooKeeper) and ways of their application upon the course management system, 
 
 although scalability did not constitute a big issue to be solved at that time, nevertheless it might be possible
 
