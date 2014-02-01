@@ -1,0 +1,10 @@
+package favu.hms.model.user;
+
+/**
+ *
+ * @author Pierre-Élie Fauché
+ */
+public interface Teaching {
+	public abstract int getIdNum();
+	public abstract String getPersonalInfo();
+}

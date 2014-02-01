@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>View homework</title>
+</head>
+
+<body>
+<h2>Homework 10</h2>
+<table width="597" border="0">
+  <tr>
+    <th width="152" scope="row"><div align="left">Name</div></th>
+    <td width="435">Application analysis </td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left">Description</div></th>
+    <td>In this homework, you will learn to perform application analysis </td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left">Attached files </div></th>
+    <td><a href="#">Homework10.zip</a></td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left">Assigned date </div></th>
+    <td>2009.03.10</td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left">Due date </div></th>
+    <td>2009.03.25</td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left">Re-submit enabled? </div></th>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left"></div></th>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th colspan="2" scope="row"><div align="left">Discussions (a discussion board a small board)</div></th>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left"></div></th>
+    <th scope="row">&nbsp;</th>
+  </tr>
+  <tr>
+    <th height="28" scope="row"><div align="left">Message</div></th>
+    <td><textarea name="txtMessage" cols="50" rows="7" id="txtMessage"></textarea></td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left">Send to </div></th>
+    <td>Public 
+    <input type="checkbox" name="checkbox" value="checkbox" /> 
+    TAs only 
+    <input type="checkbox" name="checkbox2" value="checkbox" /> 
+    Instructor only 
+    <input type="checkbox" name="checkbox3" value="checkbox" /></td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="left"></div></th>
+    <td><input name="btnPost" type="submit" id="btnPost" value="Submit" />
+    <input name="btnCancel" type="submit" id="btnCancel" value="Cancel" /></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>

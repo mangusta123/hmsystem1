@@ -1,0 +1,283 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package favu.hms.model.course;
+
+import favu.hms.database.DatabaseInterface;
+import favu.hms.database.RecordNotFoundException;
+import favu.hms.model.user.*;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+
+
+public class Course {
+
+    private String courseDept;
+    private String courseName;
+    private String courseID = "";
+    private int limitUp;
+    private boolean available;
+    private String courseInfo;
+    private int courseInstr;
+    private Collection<TeachingAssistant> taList = new Vector();
+    private Collection<Student> studentList = new Vector();
+    private Collection<Group> groupList = new Vector();
+    private Collection<Homework> hwList = new Vector();
+    private int numOfStud;
+
+    public Course(String courseDept, String courseName, String courseID, int limitUp, boolean available, String courseInfo, int courseInstr) {
+        this.courseDept = courseDept;
+        this.courseName = courseName;
+        this.courseID = courseID;
+        this.limitUp = limitUp;
+        this.available = available;
+        this.courseInfo = courseInfo;
+        this.courseInstr = courseInstr;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public String getCourseDept() {
+        return courseDept;
+    }
+
+    public String getCourseID() {
+        return courseID;
+    }
+
+    public String getCourseInfo() {
+        return courseInfo;
+    }
+
+    public int getCourseInstr() {
+        return courseInstr;
+    }
+
+    public void setCourseInstr(int courseInstr) {
+        this.courseInstr = courseInstr;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public int getLimitUp() {
+        return limitUp;
+    }
+
+	public int getNumOfStud() {
+		return numOfStud;
+	}
+
+    public Collection<TeachingAssistant> getTaList() {
+			if (this.taList.size()<1) {
+				this.taList = DatabaseInterface.getInstance().retrieveTAsForCourseWithId(this.courseID);
+			}
+      return taList;
+    }
+
+    public Collection<Group> getGroupList() {
+			if (groupList.size()<1) {
+				groupList = DatabaseInterface.getInstance().retrieveGroupsForCourseWithID(courseID);
+			}
+      return groupList;
+    }
+
+    public Collection<Student> getStudentList() {
+        return studentList;
+    }
+
+	public void setCourseID(String courseID) {
+		this.courseID = courseID;
+	}
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public void setCourseDept(String courseDept) {
+        this.courseDept = courseDept;
+    }
+
+    public void setCourseInfo(String courseInfo) {
+        this.courseInfo = courseInfo;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public void setLimitUp(int limitUp) {
+        this.limitUp = limitUp;
+    }
+
+    public void setNumOfStud(int numOfStud) {
+        this.numOfStud = numOfStud;
+    }
+
+
+
+    /**
+     *
+     * @param student
+     * @return
+     */
+    public boolean addStudent(Student student){
+        if (this.numOfStud==this.limitUp){
+            return false;
+        }
+        if (this.studentList.add(student)){
+            this.numOfStud++;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param IdNum
+     * @return
+     * @throws favu.hms.database.RecordNotFoundException
+     */
+    public boolean addStudentWithId(int IdNum) throws RecordNotFoundException{
+        if (this.numOfStud==this.limitUp){
+            return false;
+        }
+        if (this.studentList.add(Student.studentWithId(IdNum))){
+            this.numOfStud++;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     *
+     * @param student
+     * @return
+     */
+    public boolean remStudent(Student student){
+        Iterator ite = this.studentList.iterator();
+        Student tempStudent = null;
+        while (ite.hasNext()) {
+            tempStudent = (Student)ite.next();
+            if (tempStudent.getIdNum()==student.getIdNum()){
+                if (this.studentList.remove(tempStudent)){
+                    this.numOfStud--;
+                    return true;
+                }
+                break;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param group
+     * @return
+     */
+    public boolean addGroup(Group group){
+        return this.groupList.add(group);
+    }
+
+    /**
+     *
+     * @param group
+     * @return
+     */
+    public boolean remGroup(Group group){
+        Iterator ite = this.groupList.iterator();
+        Group tempGroup = null;
+        while (ite.hasNext()) {
+            tempGroup = (Group)ite.next();
+            if (tempGroup.getGroupID()==group.getGroupID()){
+                return this.groupList.remove(tempGroup);
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param hw
+     * @return
+     */
+	public boolean addHomework(Homework hw){
+        return this.hwList.add(hw);
+    }
+
+/**
+ *
+ * @param hw
+ * @return
+ */
+    public boolean remHomework(Homework hw){
+        Iterator ite = this.hwList.iterator();
+        Homework tempHw = null;
+        while (ite.hasNext()) {
+            tempHw = (Homework)ite.next();
+            if (tempHw.getHomeworkID()==hw.getHomeworkID()){
+                return this.hwList.remove(tempHw);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return the hwList
+     */
+    public Collection<Homework> getHwList() {
+			if (this.hwList.size()<1) {
+				this.hwList = DatabaseInterface.getInstance().retrieveHomeworksForCourseWithID(courseID);
+			}
+      return hwList;
+    }
+
+    /**
+     * @param hwList the hwList to set
+     */
+    public void setHwList(Collection<Homework> hwList) {
+        this.hwList = hwList;
+    }
+
+    public boolean addTA(TeachingAssistant ta){
+        return this.taList.add(ta);
+    }
+
+    public boolean remTA (TeachingAssistant ta){
+        Iterator ite = this.taList.iterator();
+        TeachingAssistant tempTa = null;
+        while (ite.hasNext()) {
+            tempTa = (TeachingAssistant)ite.next();
+            if (tempTa.getIdNum()==ta.getIdNum()){
+                return this.taList.remove(tempTa);
+            }
+        }
+        return false;
+    }
+
+  public Course record() throws RecordNotFoundException, SQLException {
+		return DatabaseInterface.getInstance().recordCourse(this);
+	}
+
+	public static Course courseWithId(String string) throws RecordNotFoundException {
+		return DatabaseInterface.getInstance().retrieveCourseWithId(string);
+	}
+
+	public static Collection<String> getAllDepartments() {
+		return DatabaseInterface.getInstance().retrieveDepartmentList();
+	}
+
+	public static Collection<Course> getCourseForDepartment(String dept) {
+		return DatabaseInterface.getInstance().retrieveCoursesForDepartment(dept);
+	}
+}

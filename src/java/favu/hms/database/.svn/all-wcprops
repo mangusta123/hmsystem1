@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/135/Favu-HMS/src/java/favu/hms/database
+END
+DatabaseColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/30/Favu-HMS/src/java/favu/hms/database/DatabaseColumn.java
+END
+DatabaseInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/135/Favu-HMS/src/java/favu/hms/database/DatabaseInterface.java
+END
+DatabaseStructure.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/44/Favu-HMS/src/java/favu/hms/database/DatabaseStructure.java
+END
+DatabaseInitializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/116/Favu-HMS/src/java/favu/hms/database/DatabaseInitializer.java
+END
+RecordNotFoundException.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/30/Favu-HMS/src/java/favu/hms/database/RecordNotFoundException.java
+END
+DatabaseTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/124/Favu-HMS/src/java/favu/hms/database/DatabaseTable.java
+END

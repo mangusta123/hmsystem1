@@ -1,0 +1,44 @@
+
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Create a group</title>
+    </head>
+    <body>
+         <h2>Create a group</h2>
+         <form id="form1" name="form1" method="post" action="">
+           <table width="381" height="133" border="0">
+             <tr>
+               <td width="165" height="27">Group Name </td>
+               <td width="206"><input name="txtGroupName" type="text" id="txtGroupName" /></td>
+             </tr>
+             <tr>
+               <td height="27">Group Password </td>
+               <td><input name="txtGroupPassword" type="text" id="txtGroupPassword" /></td>
+             </tr>
+             <tr>
+               <td height="27">Confirm Password </td>
+               <td><input type="text" name="textfield" /></td>
+             </tr>
+             <tr>
+               <td>Group Description </td>
+               <td><input name="txtGroupDesc" type="text" id="txtGroupDesc" /></td>
+             </tr>
+             <tr>
+               <td height="37">Maximum Members </td>
+               <td><input name="txtMaxGroupMembers" type="text" id="txtMaxGroupMembers" /></td>
+             </tr>
+             <tr>
+               <td height="35">&nbsp;</td>
+               <td><input name="btnCreateGroup" type="submit" id="btnCreateGroup" value="Create group" />
+               <input name="btnCancel" type="reset" id="btnCancel" value="Cancel" /></td>
+             </tr>
+           </table>
+        </form>
+    </body>
+</html>

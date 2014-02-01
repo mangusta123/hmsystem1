@@ -1,0 +1,248 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package favu.hms.controller.course;
+
+import favu.hms.database.DatabaseInterface;
+import favu.hms.database.RecordNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import favu.hms.model.course.*;
+import java.io.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.servlet.RequestDispatcher;
+import org.apache.commons.fileupload.*;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
+
+/**
+ *
+ * @author trung nguyen
+ */
+public class HomeworkManager extends HttpServlet {
+
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+			String uri = request.getRequestURI();
+      uri = uri.substring(uri.lastIndexOf("/") + 1);
+
+			if (uri.equals("addMessage.cgi")) {
+				this.addMessage(request, response);
+			} else {
+
+        // only instructor is allow to add homework
+        if (request.getSession().getAttribute("instructorID") == null) {
+            request.getRequestDispatcher("/WEB-INF/jsp/v_student.jsp").forward(request, response);
+            return;
+        }
+
+        try {
+            if (uri.equals("addHomework.cgi") || uri.equals("updateHomework.cgi")) {
+                Homework hw = addHomework(request, response);
+                request.setAttribute("homeworkID", hw.getHomeworkID());
+                request.getRequestDispatcher("/WEB-INF/jsp/v_homework.jsp").forward(request, response);
+            } else if (uri.equals("removeHomework.cgi")) {
+                removeHomework(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/v_instructor.jsp").forward(request, response);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+			}
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /** 
+     * Returns a short description of the servlet.
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+    /**
+     * Add this new homework to database
+     * @param hw
+     */
+    public Homework addHomework(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, RecordNotFoundException {
+        Homework hw = null;
+        // Create a new file upload handler
+        ServletFileUpload upload = new ServletFileUpload();
+
+        try {
+            FileItemIterator iter = upload.getItemIterator(request);
+
+            while (iter.hasNext()) {
+                FileItemStream item = iter.next();
+                String name = item.getFieldName();
+                InputStream stream = item.openStream();
+
+                if (item.isFormField()) {
+                    String fieldValue = Streams.asString(stream);
+                    if (name.equals("homeworkID")) {
+                        int id = Integer.parseInt(fieldValue);
+                        if (id == -1) {
+                            // new homework need to be created
+                            hw = new Homework();
+                            hw.setInstructorID((Integer) request.getSession().getAttribute("instructorID"));
+                            // this should really be set in other place!!
+                            hw.setAssignedDate(new Date());
+                            hw.setFiles(new ArrayList<String>());
+                        } else {
+                            // update existing homework
+                            hw = Homework.homeworkWithId(id);
+                        }
+                    }
+
+                    if (name.equals("courseID")) {
+                        hw.setCourseID(fieldValue);
+                    }
+
+                    if (name.equals("description")) {
+                        hw.setDescription(fieldValue);
+                    }
+                    if (name.equals("dueDate")) {
+                        hw.setDueDate(getDueDate(fieldValue));
+                    }
+                    if (name.equals("name")) {
+                        hw.setName(fieldValue);
+                    }
+                    if (name.equals("gradingPolicy")) {
+                        hw.setGradingPolicy(fieldValue);
+                    }
+                    if (name.equals("updatable")) {
+                        if (fieldValue.equals("Yes")) {
+                            hw.setUpdatable(true);
+                        } else {
+                            hw.setUpdatable(false);
+                        }
+                    }
+                } else {
+                    //String root = getServletContext().getInitParameter("upload_directory");
+                    //String root = getServletContext().getRealPath("/uploads");
+                    //String fileName = root + "\\" + item.getName();
+                    String fileName = item.getName();
+                    hw.addFile(fileName);
+                    writeFileToDisk(fileName, stream);
+                }
+            }
+        } catch (FileUploadException ex) {
+            System.err.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        // update the database
+        try {
+            hw.record();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        return hw;
+    }
+
+	private void addMessage(HttpServletRequest request, HttpServletResponse response) {
+		Integer userId = (Integer)request.getSession().getAttribute("studentID");
+		if (userId==null)
+			userId = (Integer)request.getSession().getAttribute("instructorID");
+
+		int hwId = Integer.parseInt(request.getParameter("homeworkID"));
+
+		Message msg = new Message(hwId, userId, request.getParameter("content"));
+		try {
+			msg.record();
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/v_homework.jsp");
+			rd.forward(request, response);
+		} catch (Exception ex) {
+			ex.printStackTrace(System.err);
+		}
+
+	}
+
+    private void writeFileToDisk(String fileName, InputStream in) {
+        String filePath = getServletContext().getRealPath("/uploads") + "\\" + fileName;
+        try {
+            FileOutputStream out = new FileOutputStream(filePath);
+            int b;
+            while ((b = in.read()) != -1) {
+                out.write(b);
+            }
+
+            in.close();
+            out.close();
+        } catch (FileNotFoundException ex) {
+            System.err.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public void removeHomework(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException {
+        try {
+            int id = Integer.parseInt(request.getParameter("homeworkID"));
+            Homework hw = Homework.homeworkWithId(id);
+            DatabaseInterface db = DatabaseInterface.getInstance();
+            db.removeHomework(hw);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        } catch (RecordNotFoundException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    /**
+     * Convert date from string to Date
+     * @param date
+     * @return
+     */
+    private Date getDueDate(String date) {
+        return new Date();
+    }
+}

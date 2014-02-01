@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Add new homework</title>
+</head>
+
+<body>
+<h2>Add new homework</h2>
+<form action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
+  <table width="456" border="0">
+    <tr>
+      <th width="124" scope="row"><div align="left">Homework Name </div></th>
+      <td width="322"><input name="txtHomeworkName" type="text" id="txtHomeworkName" size="50" /></td>
+    </tr>
+    <tr>
+      <th scope="row"><div align="left">Homework Description </div></th>
+      <td><textarea name="textarea" cols="50" rows="7"></textarea></td>
+    </tr>
+    <tr>
+      <th scope="row"><div align="left">Attached files </div></th>
+      <td><p>
+        <input type="file" name="file" />
+      </p>
+      <p>
+        <input type="file" name="file2" />
+      </p></td>
+    </tr>
+    <tr>
+      <th scope="row"><div align="left">Due date </div></th>
+      <td>Select from calendar </td>
+    </tr>
+    <tr>
+      <th scope="row"><div align="left">
+        Enable <br />
+        re-submit? 
+      </div></th>
+      <td>Yes 
+        <input name="chbEnableResubmit" type="checkbox" id="chbEnableResubmit" value="Yes" />
+      No 
+      <input name="chbEnableResubmit" type="checkbox" id="chbEnableResubmit" value="No" /></td>
+    </tr>
+    <tr>
+      <th scope="row">&nbsp;</th>
+      <td><input name="btnAddHomework" type="submit" id="btnAddHomework" value="Add homework" />
+      <input name="btnCancel" type="submit" id="btnCancel" value="Cancel" /></td>
+    </tr>
+  </table>
+</form>
+
+<p>&nbsp;</p>
+</body>
+</html>

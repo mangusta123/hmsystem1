@@ -1,0 +1,71 @@
+9
+
+dir
+139
+https://favu.googlecode.com/svn/Favu-HMS/web
+https://favu.googlecode.com/svn
+
+
+
+2009-05-24T08:52:33.823645Z
+139
+scallion.corp
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+e9c35a8a-3481-11de-b438-597f59cd7555
+
+index.jsp
+file
+
+
+
+
+2009-05-13T23:31:19.000000Z
+fea59e1409b9b7f45c6556bf6a82d386
+2009-05-13T23:00:31.444477Z
+112
+trung.ngvan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+772
+
+WEB-INF
+dir
+
+uploads
+dir
+
+ui
+dir
+

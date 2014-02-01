@@ -1,0 +1,221 @@
+package favu.hms.database;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Hashtable;
+import java.util.Set;
+import java.util.Vector;
+
+/**
+ *
+ * @author Pierre-Élie Fauché
+ */
+public class DatabaseTable {
+
+	private String name;
+	private Class javaClass;
+	private String sqlProperty;
+	private Map<String,DatabaseColumn> columns;
+	private String idColumn;
+
+	public DatabaseTable(String name, Class javaClass, String sqlProperty, String idColumn) {
+		this.name = name;
+		this.javaClass = javaClass;
+		this.sqlProperty = sqlProperty;
+		this.idColumn = idColumn;
+		this.columns = new Hashtable();
+	}
+
+	public Class getJavaClass() {
+		return javaClass;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getSqlProperty() {
+		return sqlProperty;
+	}
+
+	public String getIdColumn() {
+		return idColumn;
+	}
+
+	public Map<String,DatabaseColumn> getColumns() {
+		return columns;
+	}
+
+	public DatabaseTable addColumn(DatabaseColumn value) {
+		this.columns.put(value.getName(), value);
+		return this;
+	}
+
+	public String getCreateSQL() {
+		StringBuffer sql = new StringBuffer("CREATE TABLE "+this.name+"( ");
+
+		Collection cols = this.columns.values();
+		Iterator i = cols.iterator();
+		while (i.hasNext()) {
+			DatabaseColumn c = (DatabaseColumn)i.next();
+			sql.append(c.getName()+" "+c.getSqlType()+" "+c.getSqlProperty());
+			if (i.hasNext())
+				sql.append(", ");
+		}
+
+		if (this.idColumn.length()>0)
+			sql.append(", PRIMARY KEY ("+this.idColumn+")");
+
+		if (this.sqlProperty.length()>0)
+			sql.append(", "+this.sqlProperty);
+
+		sql.append(" )");
+		return sql.toString();
+	}
+
+	public String getSelectSQL() {
+		StringBuffer sql = new StringBuffer("SELECT ");
+
+		Collection cols = this.columns.values();
+		Iterator i = cols.iterator();
+		while (i.hasNext()) {
+			DatabaseColumn c = (DatabaseColumn)i.next();
+			sql.append(c.getName());
+			if (i.hasNext())
+				sql.append(", ");
+		}
+
+		sql.append(" FROM "+this.name);
+		return sql.toString();
+	}
+
+	public String getSelectFieldsWithIdSQL(String fields, Object id) {
+		return this.getSelectFieldsWithConstraintSQL(fields, this.getIdColumn(), id);
+	}
+
+	public String getSelectFieldsWithConstraintSQL(String fields, String field, Object value) {
+		StringBuffer sql = new StringBuffer("SELECT "+fields+" FROM "+this.getName()+" WHERE "+field+"=");
+		
+		if (value.getClass().equals(Integer.class)) {
+			sql.append(value+"");
+		} else if (value.getClass().equals(String.class)) {
+			sql.append("\'"+value+"\'");
+		}
+
+		return sql.toString();
+	}
+
+	public int insertFields(Connection con, Map<String, Object> fields)
+	throws SQLException {
+		Integer newId = 0;
+
+		Collection<String> validKeys = new Vector();
+		Set<String> keys = fields.keySet();
+		Iterator ite = keys.iterator();
+		while (ite.hasNext()) {
+			String key = (String)ite.next();
+			if (this.getColumns().get(key) != null) {
+				validKeys.add(key);
+			}
+		}
+		String[] validKeysArray = validKeys.toArray(new String[0]);
+
+		if (validKeysArray.length>0) {
+			StringBuffer sql = new StringBuffer("INSERT INTO "+this.name+" (");
+
+			for (int i=0; i<validKeysArray.length; i++) {
+				sql.append(validKeysArray[i]);
+				if ( i < (validKeysArray.length-1) )
+					sql.append(", ");
+			}
+
+			sql.append(") VALUES (");
+			for (int i=0; i<validKeysArray.length; i++) {
+				sql.append("?");
+				if ( i < (validKeysArray.length-1) )
+					sql.append(", ");
+			}
+			sql.append(")");
+			//System.err.println(sql.toString());
+
+			PreparedStatement psInsert = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+
+			for (int i=0; i<validKeysArray.length; i++) {
+				Object value = fields.get(validKeysArray[i]);
+				Class fieldClass = this.columns.get(validKeysArray[i]).getJavaClass();
+				
+				if (fieldClass.equals(String.class)) {
+					psInsert.setString(i+1, (String)value);
+				} else if (fieldClass.equals(Integer.class)) {
+					psInsert.setInt(i+1, (Integer)value);
+				} else if (fieldClass.equals(Boolean.class)) {
+					psInsert.setBoolean(i+1, (Boolean)value);
+				} else if (fieldClass.equals(Timestamp.class)) {
+					psInsert.setTimestamp(i+1, (Timestamp)value);
+				}
+			}
+
+			psInsert.executeUpdate();
+
+			ResultSet rs = psInsert.getGeneratedKeys();
+			if (rs.next()) 
+				newId = rs.getInt(1);
+			
+			rs.close();
+			psInsert.close();
+		}
+
+		return newId;
+	}
+
+	public int deleteWithConstraints(Connection con, Map<String, Object> constraints)
+	throws SQLException {
+		StringBuffer sql = new StringBuffer("DELETE FROM "+this.getName()+" WHERE ");
+
+		String[] keys = constraints.keySet().toArray(new String[0]);
+		for (int i=0; i<keys.length; i++) {
+			sql.append(keys[i]+"=?");
+			if (i<keys.length-1)
+				sql.append(" AND ");
+		}
+
+		PreparedStatement psDelete = con.prepareStatement(sql.toString());
+
+		for (int i=0; i<keys.length; i++) {
+			Class fieldClass = constraints.get(keys[i]).getClass();
+			if (fieldClass.equals(String.class)) {
+				psDelete.setString(i+1, (String)constraints.get(keys[i]));
+			} else if (fieldClass.equals(Integer.class)) {
+				psDelete.setInt(i+1, (Integer)constraints.get(keys[i]));
+			} else if (fieldClass.equals(Boolean.class)) {
+				psDelete.setBoolean(i+1, (Boolean)constraints.get(keys[i]));
+			} else if (fieldClass.equals(Timestamp.class)) {
+				psDelete.setTimestamp(i+1, (Timestamp)constraints.get(keys[i]));
+			}
+		}
+
+		int ret = psDelete.executeUpdate();
+		psDelete.close();
+		return ret;
+	}
+
+	public int deleteWithConstraint(Connection con, String field, Object value)
+	throws SQLException {
+		Map<String, Object> constraints = new Hashtable(1);
+		constraints.put(field, value);
+		return this.deleteWithConstraints(con, constraints);
+	}
+
+	public int deleteWithId(Connection con, Object id) 
+	throws SQLException {
+		return this.deleteWithConstraint(con, this.getIdColumn(), id);
+	}
+	
+}

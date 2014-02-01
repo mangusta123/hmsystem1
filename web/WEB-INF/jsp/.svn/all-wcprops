@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/139/Favu-HMS/web/WEB-INF/jsp
+END
+v_course.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/134/Favu-HMS/web/WEB-INF/jsp/v_course.jsp
+END
+v_hwsubmission_student.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/138/Favu-HMS/web/WEB-INF/jsp/v_hwsubmission_student.jsp
+END
+course_list_instructor.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/122/Favu-HMS/web/WEB-INF/jsp/course_list_instructor.jsp
+END
+v_hwsubmission_instructor.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/138/Favu-HMS/web/WEB-INF/jsp/v_hwsubmission_instructor.jsp
+END
+v_student.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/76/Favu-HMS/web/WEB-INF/jsp/v_student.jsp
+END
+v_submissions_by_hw.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/137/Favu-HMS/web/WEB-INF/jsp/v_submissions_by_hw.jsp
+END
+v_messages.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/139/Favu-HMS/web/WEB-INF/jsp/v_messages.jsp
+END
+listCourse.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/97/Favu-HMS/web/WEB-INF/jsp/listCourse.jsp
+END
+create_group.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/50/Favu-HMS/web/WEB-INF/jsp/create_group.jsp
+END
+v_homework.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/139/Favu-HMS/web/WEB-INF/jsp/v_homework.jsp
+END
+course_list_student.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/120/Favu-HMS/web/WEB-INF/jsp/course_list_student.jsp
+END
+v_instructor.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/114/Favu-HMS/web/WEB-INF/jsp/v_instructor.jsp
+END
+add_homework.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/129/Favu-HMS/web/WEB-INF/jsp/add_homework.jsp
+END
+v_submissions_course.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/76/Favu-HMS/web/WEB-INF/jsp/v_submissions_course.jsp
+END

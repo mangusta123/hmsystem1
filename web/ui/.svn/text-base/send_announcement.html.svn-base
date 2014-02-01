@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Send announcement</title>
+</head>
+
+<body>
+<h2>Send announcement (notification)</h2>
+<form id="form1" name="form1" method="post" action="">
+  <table width="200" border="0">
+    <tr>
+      <th scope="row">To</th>
+      <td><input name="txtEmails" type="text" id="txtEmails" />
+        <select name="select">
+          <option>Group 1</option>
+          <option>Group 2</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Subject</th>
+      <td><input name="txtSubject" type="text" id="txtSubject" /></td>
+    </tr>
+    <tr>
+      <th scope="row">Content</th>
+      <td><textarea name="txtContent" cols="50" rows="7" id="txtContent"></textarea></td>
+    </tr>
+    <tr>
+      <th scope="row">&nbsp;</th>
+      <td><input name="btnSend" type="submit" id="btnSend" value="Send" />
+      <input name="btnCancel" type="submit" id="btnCancel" value="Cancel" /></td>
+    </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

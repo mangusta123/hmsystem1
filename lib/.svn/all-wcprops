@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/100/Favu-HMS/lib
+END
+derbyclient.jar
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/2/Favu-HMS/lib/derbyclient.jar
+END
+cos.jar
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/100/Favu-HMS/lib/cos.jar
+END
+commons-fileupload-1.2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/18/Favu-HMS/lib/commons-fileupload-1.2.1.jar
+END
+nblibraries.properties
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/85/Favu-HMS/lib/nblibraries.properties
+END
+commons-beanutils-1.8.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/40/Favu-HMS/lib/commons-beanutils-1.8.0.jar
+END
